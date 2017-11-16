@@ -1,0 +1,35 @@
+int temperaturePin = A5; //temperature sensor pin
+int tempHigh = 28; //top value in range of temperature values (mess with me!)
+int tempLow = 24; //bottom value in range of temperature values (mess with me!) --make sure tempHigh stays above tempLow
+// and the current temperature is within the range for optimum performance.
+
+void setup() {
+
+    //set temperature and push-button pins as inputs
+    pinMode(temperaturePin, INPUT);
+    
+    //open serial connection for debugging
+    Serial.begin(9600);
+}
+
+void loop() {
+    double temperature = (analogRead(temperaturePin) * 3.3) / 4095;  //getting the voltage reading from the temperature sensor
+    temperature = (temperature - 0.5) * 100; //turn the voltage into a Celcius reading
+    Serial.println(temperature); //print temperature to serial for debugging
+        // Publish data
+    Particle.publish("temperature2807112", String(temperature), PRIVATE);
+    digitalWrite(D7,HIGH);
+    delay(2000);
+    digitalWrite(D7,LOW);
+
+          
+      
+
+void loop() {
+  // Get some data
+  String data = String(10);
+  // Trigger the integration
+  Particle.publish("Temperature", data, PRIVATE);
+  // Wait 60 seconds
+  delay(60000);
+}
